@@ -6,127 +6,121 @@
     <title>Theia</title>
     <meta
       name="description"
-      content="Theia is a tabletop turret. You ask for an object. It takes seven photos, circles the match, and shows azimuth and elevation."
+      content="Theia is a tabletop turret. You ask for an object. It looks around the room, circles it on screen, and gives the angle a laser can point to."
     />
     <link rel="icon" href="favicon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <main>
-      <header>
-        <p class="kicker">Tabletop turret</p>
-        <h1>Theia</h1>
-        <p class="lede">Ask for an object. Theia circles it and gives a laser the angle.</p>
-      </header>
+    <header class="site-header">
+      <h1 class="brand">Theia</h1>
+    </header>
 
+    <main>
       <div class="video-card">
         <div class="video">
           <iframe
             src="https://www.youtube.com/embed/vK-shqyJdKA"
-            title="Theia"
+            title="Theia looking for an object on a desk"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
             allowfullscreen
           ></iframe>
         </div>
       </div>
 
-      <section class="copy">
+      <section class="story" aria-label="What Theia does">
         <p>
           People living with dementia, and people who are just forgetful, lose
           track of ordinary things. The glasses are on the desk. The earbud case
-          is by the keyboard. Asking the group chat does not put a point on the
-          object.
+          is by the keyboard.
         </p>
         <p>
-          You say what you are looking for, or type it. A phone camera takes
-          seven photos. Theia picks the best match, circles it, and shows
-          azimuth and elevation in degrees.
+          Theia is a tabletop turret. You ask for the object. It looks around
+          the room, circles it on screen, and gives the angle a laser can point
+          to.
+        </p>
+        <p>
+          You say what you are looking for, or type it. When you finish
+          speaking, the search starts. A phone camera takes seven photos. Theia
+          picks the best match, draws a mark on it, and shows azimuth and
+          elevation in degrees.
         </p>
       </section>
 
       <section class="uses" aria-labelledby="uses-title">
-        <h2 id="uses-title">Where it helps</h2>
+        <h2 id="uses-title">Who it is for</h2>
         <div class="tablist" role="tablist" aria-label="Use cases">
           <button
             type="button"
             role="tab"
-            id="tab-forget"
-            aria-controls="panel-forget"
+            id="tab-home"
+            aria-controls="panel-home"
             aria-selected="true"
             tabindex="0"
           >
-            Forgetful
+            Home
           </button>
           <button
             type="button"
             role="tab"
-            id="tab-care"
-            aria-controls="panel-care"
+            id="tab-caregiver"
+            aria-controls="panel-caregiver"
             aria-selected="false"
             tabindex="-1"
           >
-            Care closet
+            Caregiver
           </button>
           <button
             type="button"
             role="tab"
-            id="tab-desk"
-            aria-controls="panel-desk"
+            id="tab-shared"
+            aria-controls="panel-shared"
             aria-selected="false"
             tabindex="-1"
           >
-            Shared desk
+            Shared room
           </button>
         </div>
-        <div class="panels">
-          <div
-            class="panel"
-            role="tabpanel"
-            id="panel-forget"
-            aria-labelledby="tab-forget"
-          >
-            <h3>Someone who is forgetful, or living with dementia</h3>
-            <p>
-              The glasses and the earbud case are still in the room. They ask
-              for the object. Theia circles it and shows azimuth and elevation,
-              so the point is on the thing itself.
-            </p>
-          </div>
-          <div
-            class="panel"
-            role="tabpanel"
-            id="panel-care"
-            aria-labelledby="tab-care"
-            hidden
-          >
-            <h3>A caregiver or a clinic closet</h3>
-            <p>
-              A caregiver, or a closet of lookalike supplies, needs one named
-              item. Ask for it. Seven photos, one circle, and the angle from
-              the turret.
-            </p>
-          </div>
-          <div
-            class="panel"
-            role="tabpanel"
-            id="panel-desk"
-            aria-labelledby="tab-desk"
-            hidden
-          >
-            <h3>A shared desk</h3>
-            <p>
-              Glasses and an earbud case trade places on a desk other people
-              use. Ask once. Theia circles the match and shows azimuth and
-              elevation.
-            </p>
-          </div>
+        <div
+          class="panel"
+          role="tabpanel"
+          id="panel-home"
+          aria-labelledby="tab-home"
+        >
+          <p>
+            People living with dementia, and people who are just forgetful. The
+            glasses are on the desk. The earbud case is by the keyboard.
+          </p>
+        </div>
+        <div
+          class="panel"
+          role="tabpanel"
+          id="panel-caregiver"
+          aria-labelledby="tab-caregiver"
+          hidden
+        >
+          <p>
+            Someone else in the room asks for the glasses, keys, or medication.
+          </p>
+        </div>
+        <div
+          class="panel"
+          role="tabpanel"
+          id="panel-shared"
+          aria-labelledby="tab-shared"
+          hidden
+        >
+          <p>A clinic closet or a shared desk. Same question: find this.</p>
         </div>
       </section>
-
-      <p class="source">
-        The turret is on <a href="https://github.com/eluo26/theia">GitHub</a>.
-      </p>
     </main>
+
+    <footer>
+      <p>
+        <a href="https://github.com/eluo26/theia">github.com/eluo26/theia</a>
+      </p>
+    </footer>
+
     <script>
       const tablist = document.querySelector('[role="tablist"]');
       const tabs = [...tablist.querySelectorAll('[role="tab"]')];
@@ -152,7 +146,8 @@
         const keys = ["ArrowLeft", "ArrowRight", "Home", "End"];
         if (!keys.includes(event.key)) return;
         event.preventDefault();
-        const current = tabs.indexOf(document.activeElement);
+        const current = tabs.findIndex((tab) => tab === document.activeElement);
+        if (current < 0) return;
         let next = current;
         if (event.key === "ArrowRight") next = (current + 1) % tabs.length;
         if (event.key === "ArrowLeft") next = (current - 1 + tabs.length) % tabs.length;
