@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Theia — find it, then point</title>
+    <meta
+      name="description"
+      content="Theia listens for an object, sweeps the room, circles it, and gives the laser an angle."
+    />
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="#top">Theia</a>
+      <nav>
+        <a href="#demo">Try it out</a>
+        <a href="#how">How it works</a>
+        <a href="https://github.com/eluo26/theia">Run the full app</a>
+      </nav>
+    </header>
+
+    <main id="top">
+      <section class="hero">
+        <p class="eyebrow">For someone who cannot search the room</p>
+        <h1>Where are my glasses?</h1>
+        <p class="lede">
+          Theia is a tabletop turret. You ask for an object. A camera looks
+          around the room, circles it on screen, and gives the angle a laser
+          can point to.
+        </p>
+        <div class="hero-actions">
+          <a class="button" href="#demo">Try it out</a>
+          <a class="button quiet" href="https://github.com/eluo26/theia">Source</a>
+        </div>
+      </section>
+
+      <section id="demo" class="demo-section">
+        <div class="section-copy">
+          <h2>Try a saved scan</h2>
+          <p>
+            This page cannot see your room. It plays a real search from our
+            desk: “find my airpods.” The full camera and laser run from the
+            project.
+          </p>
+        </div>
+
+        <div class="app-frame" id="app">
+          <div class="app-bar">
+            <span>Theia</span>
+            <span class="role">Patient</span>
+          </div>
+
+          <div id="ask" class="ask">
+            <h3>What are you looking for?</h3>
+            <button type="button" class="mic" id="mic" aria-label="Use the sample question">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 14a3 3 0 0 0 3-3V5a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3Z" />
+                <path d="M19 11a7 7 0 0 1-14 0M12 18v3M8 21h8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+              </svg>
+            </button>
+            <p class="hint" id="hint">Tap the mic, or type the sample and press Find it</p>
+            <form id="form" class="query-form">
+              <input id="query" type="text" aria-label="What are you looking for?" placeholder="find my airpods" autocomplete="off" />
+              <button type="submit" id="find">Find it</button>
+            </form>
+            <p class="note" id="note" role="status"></p>
+          </div>
+
+          <div id="run" class="run" hidden>
+            <p class="echo" id="echo"></p>
+            <ol class="stages" id="stages">
+              <li data-stage="scanning"><span></span>Scanning</li>
+              <li data-stage="searching"><span></span>Searching</li>
+              <li data-stage="pointing"><span></span>Pointing</li>
+              <li data-stage="on_target"><span></span>On Target</li>
+            </ol>
+            <p class="stage-text" id="stage-text">Capturing photo 1 of 7…</p>
+            <div id="result" hidden>
+              <h3>Found white earbud case.</h3>
+              <figure class="preview">
+                <img src="images/desk.jpg" alt="Desk scan with the earbud case marked" width="1280" height="720" />
+                <span class="box"></span>
+                <span class="ring"></span>
+                <span class="cross"></span>
+                <span class="tag">white earbud case</span>
+              </figure>
+              <dl class="coords">
+                <div><dt>Bounding box</dt><dd>652, 358 → 737, 438</dd></div>
+                <div><dt>Center</dt><dd>694, 398</dd></div>
+                <div><dt>Image size</dt><dd>1280 × 720</dd></div>
+                <div><dt>Aim</dt><dd>az 3.4°, el -3.1°</dd></div>
+                <div><dt>Offset from center</dt><dd>66 px</dd></div>
+              </dl>
+              <button type="button" class="button" id="again">New search</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="how" class="steps">
+        <h2>What you see</h2>
+        <ol>
+          <li>
+            <strong>You speak.</strong>
+            When the sentence ends, the search starts. Typing still uses Find it.
+          </li>
+          <li>
+            <strong>The camera sweeps.</strong>
+            Seven photos cover the desk or the room.
+          </li>
+          <li>
+            <strong>One object is circled.</strong>
+            If it shows up more than once, Theia keeps the strongest view.
+          </li>
+          <li>
+            <strong>The laser gets an angle.</strong>
+            Azimuth and elevation are the point in the room.
+          </li>
+        </ol>
+      </section>
+
+      <section class="next">
+        <h2>The same question, more rooms</h2>
+        <p>
+          We started with people living with dementia, and with anyone who
+          misplaces glasses, keys, or medication. A caregiver, a clinic closet,
+          or a shared desk can ask the same thing: find this.
+        </p>
+        <a class="button" href="https://github.com/eluo26/theia">Run the full app</a>
+      </section>
+    </main>
+
+    <footer>
+      <span>Theia</span>
+      <a href="https://github.com/eluo26/theia-website">This site</a>
+      <a href="https://github.com/eluo26/theia">The turret</a>
+    </footer>
+    <script src="demo.js"></script>
+  </body>
+</html>
