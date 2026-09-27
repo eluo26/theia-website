@@ -6,40 +6,161 @@
     <title>Theia</title>
     <meta
       name="description"
-      content="Theia is a tabletop turret. You ask for an object. It looks around the room, circles it, and gives a laser an angle."
+      content="Theia is a tabletop turret. You ask for an object. It takes seven photos, circles the match, and shows azimuth and elevation."
     />
     <link rel="icon" href="favicon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
     <main>
-      <h1>Theia</h1>
-      <p>
-        People living with dementia, and people who are just forgetful, lose
-        track of ordinary things. The glasses are on the desk. The earbud case
-        is by the keyboard. Asking the group chat, or opening another app, does
-        not put a point on the object.
-      </p>
-      <p>
-        That is why we built Theia, a tabletop turret. You ask for the object.
-        It looks around the room, circles it on screen, and gives the angle a
-        laser can point to.
-      </p>
-      <p>
-        You say what you are looking for, or type it. When you finish speaking,
-        the search starts. A phone camera takes seven photos. Theia picks the
-        best match, draws a mark on it, and shows azimuth and elevation in
-        degrees.
-      </p>
-      <div class="video">
-        <iframe
-          src="https://www.youtube.com/embed/vK-shqyJdKA"
-          title="Theia"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          allowfullscreen
-        ></iframe>
+      <header>
+        <p class="kicker">Tabletop turret</p>
+        <h1>Theia</h1>
+        <p class="lede">Ask for an object. Theia circles it and gives a laser the angle.</p>
+      </header>
+
+      <div class="video-card">
+        <div class="video">
+          <iframe
+            src="https://www.youtube.com/embed/vK-shqyJdKA"
+            title="Theia"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen
+          ></iframe>
+        </div>
       </div>
-      <img src="images/desk.jpg" alt="A desk during a Theia scan, before a result is shown" />
+
+      <section class="copy">
+        <p>
+          People living with dementia, and people who are just forgetful, lose
+          track of ordinary things. The glasses are on the desk. The earbud case
+          is by the keyboard. Asking the group chat does not put a point on the
+          object.
+        </p>
+        <p>
+          You say what you are looking for, or type it. A phone camera takes
+          seven photos. Theia picks the best match, circles it, and shows
+          azimuth and elevation in degrees.
+        </p>
+      </section>
+
+      <section class="uses" aria-labelledby="uses-title">
+        <h2 id="uses-title">Where it helps</h2>
+        <div class="tablist" role="tablist" aria-label="Use cases">
+          <button
+            type="button"
+            role="tab"
+            id="tab-forget"
+            aria-controls="panel-forget"
+            aria-selected="true"
+            tabindex="0"
+          >
+            Forgetful
+          </button>
+          <button
+            type="button"
+            role="tab"
+            id="tab-care"
+            aria-controls="panel-care"
+            aria-selected="false"
+            tabindex="-1"
+          >
+            Care closet
+          </button>
+          <button
+            type="button"
+            role="tab"
+            id="tab-desk"
+            aria-controls="panel-desk"
+            aria-selected="false"
+            tabindex="-1"
+          >
+            Shared desk
+          </button>
+        </div>
+        <div class="panels">
+          <div
+            class="panel"
+            role="tabpanel"
+            id="panel-forget"
+            aria-labelledby="tab-forget"
+          >
+            <h3>Someone who is forgetful, or living with dementia</h3>
+            <p>
+              The glasses and the earbud case are still in the room. They ask
+              for the object. Theia circles it and shows azimuth and elevation,
+              so the point is on the thing itself.
+            </p>
+          </div>
+          <div
+            class="panel"
+            role="tabpanel"
+            id="panel-care"
+            aria-labelledby="tab-care"
+            hidden
+          >
+            <h3>A caregiver or a clinic closet</h3>
+            <p>
+              A caregiver, or a closet of lookalike supplies, needs one named
+              item. Ask for it. Seven photos, one circle, and the angle from
+              the turret.
+            </p>
+          </div>
+          <div
+            class="panel"
+            role="tabpanel"
+            id="panel-desk"
+            aria-labelledby="tab-desk"
+            hidden
+          >
+            <h3>A shared desk</h3>
+            <p>
+              Glasses and an earbud case trade places on a desk other people
+              use. Ask once. Theia circles the match and shows azimuth and
+              elevation.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <p class="source">
+        The turret is on <a href="https://github.com/eluo26/theia">GitHub</a>.
+      </p>
     </main>
+    <script>
+      const tablist = document.querySelector('[role="tablist"]');
+      const tabs = [...tablist.querySelectorAll('[role="tab"]')];
+      const panels = [...document.querySelectorAll('[role="tabpanel"]')];
+
+      function selectTab(tab) {
+        for (const item of tabs) {
+          const selected = item === tab;
+          item.setAttribute("aria-selected", selected ? "true" : "false");
+          item.tabIndex = selected ? 0 : -1;
+        }
+        const panelId = tab.getAttribute("aria-controls");
+        for (const panel of panels) {
+          panel.hidden = panel.id !== panelId;
+        }
+      }
+
+      for (const tab of tabs) {
+        tab.addEventListener("click", () => selectTab(tab));
+      }
+
+      tablist.addEventListener("keydown", (event) => {
+        const keys = ["ArrowLeft", "ArrowRight", "Home", "End"];
+        if (!keys.includes(event.key)) return;
+        event.preventDefault();
+        const current = tabs.indexOf(document.activeElement);
+        let next = current;
+        if (event.key === "ArrowRight") next = (current + 1) % tabs.length;
+        if (event.key === "ArrowLeft") next = (current - 1 + tabs.length) % tabs.length;
+        if (event.key === "Home") next = 0;
+        if (event.key === "End") next = tabs.length - 1;
+        selectTab(tabs[next]);
+        tabs[next].focus();
+      });
+    </script>
   </body>
 </html>
